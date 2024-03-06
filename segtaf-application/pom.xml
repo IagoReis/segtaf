@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>br.com.iagoreis</groupId>
+		<artifactId>segtaf</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>./../pom.xml</relativePath>
+	</parent>
+
+	<artifactId>segtaf-application</artifactId>
+	<name>${project.artifactId}</name>
+	<description></description>
+
+	<dependencies>
+		<dependency>
+			<groupId>br.com.iagoreis</groupId>
+			<artifactId>segtaf-application-business</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.iagoreis</groupId>
+			<artifactId>segtaf-domain-business</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.iagoreis</groupId>
+			<artifactId>segtaf-infrastructure</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.iagoreis</groupId>
+			<artifactId>segtaf-repository</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.iagoreis</groupId>
+			<artifactId>segtaf-rest-api</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+							<goal>build-info</goal>
+						</goals>
+						<configuration>
+							<mainClass>br.com.iagoreis.segtaf.SegtafApplication</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-spring-boot-application-file</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="copy application to parent target">
+								<copy file="target/${project.artifactId}.jar" tofile="./../target/${project.artifactId}.jar" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
