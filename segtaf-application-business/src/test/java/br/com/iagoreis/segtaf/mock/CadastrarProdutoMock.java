@@ -1,11 +1,11 @@
 package br.com.iagoreis.segtaf.mock;
 
-import br.com.iagoreis.segtaf.application.business.gateway.ProdutoRepository;
+import br.com.iagoreis.segtaf.application.business.gateway.CadastrarProduto;
 import br.com.iagoreis.segtaf.domain.business.entity.Produto;
 
 import java.util.Random;
 
-public class ProdutoRepositoryMock implements ProdutoRepository {
+public class CadastrarProdutoMock implements CadastrarProduto {
 
     @Override
     public Produto cadastrar(final Produto produto) {
@@ -19,20 +19,6 @@ public class ProdutoRepositoryMock implements ProdutoRepository {
         );
 
         return produtoCadastrado;
-    }
-
-    @Override
-    public Produto alterar(final Produto produto) {
-
-        final var produtoAlterado = new Produto(
-            produto.getId(),
-            produto.getNome(),
-            produto.getCategoria(),
-            produto.getPrecoBase(),
-            produto.getPrecoTarifado()
-        );
-
-        return produtoAlterado;
     }
 
 }

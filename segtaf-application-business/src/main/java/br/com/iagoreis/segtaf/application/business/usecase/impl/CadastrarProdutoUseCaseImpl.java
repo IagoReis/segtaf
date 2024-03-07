@@ -1,6 +1,6 @@
 package br.com.iagoreis.segtaf.application.business.usecase.impl;
 
-import br.com.iagoreis.segtaf.application.business.gateway.ProdutoRepository;
+import br.com.iagoreis.segtaf.application.business.gateway.CadastrarProduto;
 import br.com.iagoreis.segtaf.application.business.usecase.CadastrarProdutoUseCase;
 import br.com.iagoreis.segtaf.domain.business.entity.Produto;
 import br.com.iagoreis.segtaf.domain.business.usecase.CalcularPrecoTarifadoCategoriaUseCase;
@@ -9,14 +9,14 @@ public class CadastrarProdutoUseCaseImpl implements CadastrarProdutoUseCase {
 
     private final CalcularPrecoTarifadoCategoriaUseCase calcularPrecoTarifadoCategoriaUseCase;
 
-    private final ProdutoRepository produtoRepository;
+    private final CadastrarProduto cadastrarProduto;
 
     public CadastrarProdutoUseCaseImpl(
         final CalcularPrecoTarifadoCategoriaUseCase calcularPrecoTarifadoCategoriaUseCase,
-        final ProdutoRepository produtoRepository
+        final CadastrarProduto cadastrarProduto
     ) {
         this.calcularPrecoTarifadoCategoriaUseCase = calcularPrecoTarifadoCategoriaUseCase;
-        this.produtoRepository = produtoRepository;
+        this.cadastrarProduto = cadastrarProduto;
     }
 
     @Override
@@ -30,7 +30,7 @@ public class CadastrarProdutoUseCaseImpl implements CadastrarProdutoUseCase {
         produto.setId(null);
         produto.setPrecoTarifado(precoTarifado);
 
-        final var produtoCadastrado = produtoRepository.cadastrar(produto);
+        final var produtoCadastrado = cadastrarProduto.cadastrar(produto);
 
         return produtoCadastrado;
     }

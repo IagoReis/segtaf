@@ -1,6 +1,6 @@
 package br.com.iagoreis.segtaf.application.business.usecase.impl;
 
-import br.com.iagoreis.segtaf.application.business.gateway.ProdutoRepository;
+import br.com.iagoreis.segtaf.application.business.gateway.AlterarProduto;
 import br.com.iagoreis.segtaf.application.business.usecase.AlterarProdutoUseCase;
 import br.com.iagoreis.segtaf.domain.business.entity.Produto;
 import br.com.iagoreis.segtaf.domain.business.usecase.CalcularPrecoTarifadoCategoriaUseCase;
@@ -9,14 +9,14 @@ public class AlterarProdutoUseCaseImpl implements AlterarProdutoUseCase {
 
     private final CalcularPrecoTarifadoCategoriaUseCase calcularPrecoTarifadoCategoriaUseCase;
 
-    private final ProdutoRepository produtoRepository;
+    private final AlterarProduto alterarProduto;
 
     public AlterarProdutoUseCaseImpl(
         final CalcularPrecoTarifadoCategoriaUseCase calcularPrecoTarifadoCategoriaUseCase,
-        final ProdutoRepository produtoRepository
+        final AlterarProduto alterarProduto
     ) {
         this.calcularPrecoTarifadoCategoriaUseCase = calcularPrecoTarifadoCategoriaUseCase;
-        this.produtoRepository = produtoRepository;
+        this.alterarProduto = alterarProduto;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class AlterarProdutoUseCaseImpl implements AlterarProdutoUseCase {
 
         produto.setPrecoTarifado(precoTarifado);
 
-        final var produtoAlterado = produtoRepository.alterar(produto);
+        final var produtoAlterado = alterarProduto.alterar(produto);
 
         return produtoAlterado;
     }
