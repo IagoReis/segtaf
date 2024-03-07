@@ -1,6 +1,7 @@
 package br.com.iagoreis.segtaf.domain.business.rules;
 
 import br.com.iagoreis.segtaf.domain.business.enums.Categoria;
+import br.com.iagoreis.segtaf.domain.business.exception.CalculadoraTarifaCategoriaArgumentosInvalidosException;
 import br.com.iagoreis.segtaf.domain.business.exception.CalculadoraTarifaCategoriaNaoEncontradaException;
 import br.com.iagoreis.segtaf.domain.business.exception.CalculadoraTarifaCategoriaNullException;
 import br.com.iagoreis.segtaf.domain.business.exception.CalculadorasTarifaCategoriaNaoInformadasException;
@@ -9,6 +10,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public abstract class CalculadoraTarifaCategoria {
+
+    public static final int CEM_POR_CENTO = 100;
 
     private final Categoria categoria;
 
@@ -26,6 +29,23 @@ public abstract class CalculadoraTarifaCategoria {
         final Double pis,
         final Double cofins
     ) {
+
+        if (categoria == null) {
+            throw new CalculadoraTarifaCategoriaArgumentosInvalidosException("Categoria nao pode ser null");
+        }
+
+        if (iof == null) {
+            throw new CalculadoraTarifaCategoriaArgumentosInvalidosException("IOF nao pode ser null");
+        }
+
+        if (pis == null) {
+            throw new CalculadoraTarifaCategoriaArgumentosInvalidosException("PIS nao pode ser null");
+        }
+
+        if (cofins == null) {
+            throw new CalculadoraTarifaCategoriaArgumentosInvalidosException("COFINS nao pode ser null");
+        }
+
         this.categoria = categoria;
         this.iof = iof;
         this.pis = pis;
@@ -54,7 +74,7 @@ public abstract class CalculadoraTarifaCategoria {
 
     public BigDecimal calcularPrecoTarifado(final Categoria categoria, final BigDecimal precoBase) {
 
-        if (!consigoCalcular(categoria)) {
+        if (!consigoCalcularCategoria(categoria)) {
 
             if (proximaCalculadora == null) {
                 throw new CalculadoraTarifaCategoriaNaoEncontradaException(String.format("Nao encontrado calculadora de tarifa para a categoria %s", categoria));
@@ -70,18 +90,13 @@ public abstract class CalculadoraTarifaCategoria {
             .setScale(2, RoundingMode.HALF_EVEN);
     }
 
-    private boolean consigoCalcular(final Categoria categoriaVerificacao) {
-
-        if (categoriaVerificacao == null || categoria == null) {
-            return false;
-        }
-
+    private boolean consigoCalcularCategoria(final Categoria categoriaVerificacao) {
         return categoria.equals(categoriaVerificacao);
     }
 
     private BigDecimal calcularValorTarifa(final BigDecimal valorBase, final Double porcentagem) {
         return valorBase
-            .divide(BigDecimal.valueOf(100))
+            .divide(BigDecimal.valueOf(CEM_POR_CENTO))
             .multiply(BigDecimal.valueOf(porcentagem));
     }
 
