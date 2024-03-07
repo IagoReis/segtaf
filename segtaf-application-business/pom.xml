@@ -17,4 +17,10 @@
 	<name>${project.artifactId}</name>
 	<description></description>
 
+	<dependencies>
+		<dependency>
+			<groupId>br.com.iagoreis</groupId>
+			<artifactId>segtaf-domain-business</artifactId>
+		</dependency>
+	</dependencies>
 </project>
