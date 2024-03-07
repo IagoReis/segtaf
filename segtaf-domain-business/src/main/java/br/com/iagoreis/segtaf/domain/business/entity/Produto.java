@@ -68,4 +68,14 @@ public class Produto {
         this.precoTarifado = precoTarifado;
     }
 
+    @Override
+    public String toString() {
+        return "Produto(" +
+            "id=" + id +
+            ", nome='" + nome + '\'' +
+            ", categoria=" + categoria +
+            ", precoBase=" + precoBase +
+            ", precoTarifado=" + precoTarifado +
+            ')';
+    }
 }

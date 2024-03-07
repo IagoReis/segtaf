@@ -1,6 +1,6 @@
-package br.com.iagoreis.segtaf.repository;
+package br.com.iagoreis.segtaf.database;
 
-import br.com.iagoreis.segtaf.repository.model.ProdutoEntity;
+import br.com.iagoreis.segtaf.database.model.ProdutoEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

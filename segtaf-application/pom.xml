@@ -35,7 +35,7 @@
 
 		<dependency>
 			<groupId>br.com.iagoreis</groupId>
-			<artifactId>segtaf-repository</artifactId>
+			<artifactId>segtaf-database</artifactId>
 		</dependency>
 
 		<dependency>
