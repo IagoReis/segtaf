@@ -1,12 +1,12 @@
 package br.com.iagoreis.segtaf.application.business.usecase.impl;
 
-import br.com.iagoreis.segtaf.application.business.gateway.ProdutoRepository;
+import br.com.iagoreis.segtaf.application.business.gateway.CadastrarProduto;
 import br.com.iagoreis.segtaf.application.business.usecase.CadastrarProdutoUseCase;
 import br.com.iagoreis.segtaf.domain.business.entity.Produto;
 import br.com.iagoreis.segtaf.domain.business.enums.Categoria;
 import br.com.iagoreis.segtaf.domain.business.usecase.CalcularPrecoTarifadoCategoriaUseCase;
 import br.com.iagoreis.segtaf.domain.business.usecase.impl.CalcularPrecoTarifadoCategoriaUseCaseImpl;
-import br.com.iagoreis.segtaf.mock.ProdutoRepositoryMock;
+import br.com.iagoreis.segtaf.mock.CadastrarProdutoMock;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -18,11 +18,11 @@ class CadastrarProdutoUseCaseImplTest {
 
     private CalcularPrecoTarifadoCategoriaUseCase calcularPrecoTarifadoCategoriaUseCase = new CalcularPrecoTarifadoCategoriaUseCaseImpl();
 
-    final ProdutoRepository produtoRepository = new ProdutoRepositoryMock();
+    final CadastrarProduto cadastrarProduto = new CadastrarProdutoMock();
 
     private CadastrarProdutoUseCase cadastrarProdutoUseCase = new CadastrarProdutoUseCaseImpl(
         calcularPrecoTarifadoCategoriaUseCase,
-        produtoRepository
+        cadastrarProduto
     );
 
     @Test
