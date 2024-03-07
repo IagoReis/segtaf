@@ -27,5 +27,10 @@
 			<groupId>br.com.iagoreis</groupId>
 			<artifactId>segtaf-domain-business</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>br.com.iagoreis</groupId>
+			<artifactId>segtaf-database</artifactId>
+		</dependency>
 	</dependencies>
 </project>

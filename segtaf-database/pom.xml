@@ -13,7 +13,7 @@
 		<relativePath>./../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>segtaf-repository</artifactId>
+	<artifactId>segtaf-database</artifactId>
 	<name>${project.artifactId}</name>
 	<description></description>
 
@@ -26,6 +26,16 @@
 		<dependency>
 			<groupId>br.com.iagoreis</groupId>
 			<artifactId>segtaf-domain-business</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
 		</dependency>
 	</dependencies>
 </project>
