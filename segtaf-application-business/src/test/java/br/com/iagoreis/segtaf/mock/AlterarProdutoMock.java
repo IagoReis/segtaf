@@ -6,7 +6,7 @@ import br.com.iagoreis.segtaf.domain.business.entity.Produto;
 public class AlterarProdutoMock implements AlterarProduto {
 
     @Override
-    public Produto alterar(final Produto produto) {
+    public Produto alterar(final Long id, final Produto produto) {
 
         final var produtoAlterado = new Produto(
             produto.getId(),

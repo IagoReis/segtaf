@@ -23,19 +23,21 @@ public class AlterarProdutoImpl implements AlterarProduto {
     }
 
     @Override
-    public Produto alterar(final Produto produto) {
+    public Produto alterar(final Long id, final Produto produto) {
 
         produtoRepository
-            .findById(produto.getId())
+            .findById(id)
             .orElseThrow(() -> new ProdutoNaoEncontradoException());
+
+        produto.setId(id);
 
         final var produtoEntity = produtoEntityMapper.mapFrom(produto);
 
-        final var produtoEntityCadastrado = produtoRepository.save(produtoEntity);
+        final var produtoEntityAlterado = produtoRepository.save(produtoEntity);
 
-        final var produtoCadastrado = produtoEntityMapper.mapFrom(produtoEntityCadastrado);
+        final var produtoAlterado = produtoEntityMapper.mapFrom(produtoEntityAlterado);
 
-        return produtoCadastrado;
+        return produtoAlterado;
     }
 
 }

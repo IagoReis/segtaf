@@ -4,6 +4,6 @@ import br.com.iagoreis.segtaf.domain.business.entity.Produto;
 
 public interface AlterarProduto {
 
-    Produto alterar(Produto produto);
+    Produto alterar(Long id, Produto produto);
 
 }

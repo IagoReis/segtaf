@@ -38,7 +38,7 @@ class AlterarProdutoUseCaseImplTest {
         produto.setPrecoBase(precoBase);
         produto.setPrecoTarifado(precoTarifado);
 
-        final var produtoAlterado = alterarProdutoUseCase.execute(produto);
+        final var produtoAlterado = alterarProdutoUseCase.execute(produto.getId(), produto);
 
         assertEquals(produto.getId(), produtoAlterado.getId());
         assertEquals(produto.getNome(), produtoAlterado.getNome());
