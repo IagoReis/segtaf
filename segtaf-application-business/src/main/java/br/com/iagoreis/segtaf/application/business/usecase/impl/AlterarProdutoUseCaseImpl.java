@@ -20,7 +20,7 @@ public class AlterarProdutoUseCaseImpl implements AlterarProdutoUseCase {
     }
 
     @Override
-    public Produto execute(final Produto produto) {
+    public Produto execute(final Long id, final Produto produto) {
 
         final var precoTarifado = calcularPrecoTarifadoCategoriaUseCase.execute(
             produto.getCategoria(),
@@ -29,7 +29,7 @@ public class AlterarProdutoUseCaseImpl implements AlterarProdutoUseCase {
 
         produto.setPrecoTarifado(precoTarifado);
 
-        final var produtoAlterado = alterarProduto.alterar(produto);
+        final var produtoAlterado = alterarProduto.alterar(id, produto);
 
         return produtoAlterado;
     }

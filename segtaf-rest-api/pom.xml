@@ -17,4 +17,30 @@
 	<name>${project.artifactId}</name>
 	<description></description>
 
+	<dependencies>
+		<dependency>
+			<groupId>br.com.iagoreis</groupId>
+			<artifactId>segtaf-application-business</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>br.com.iagoreis</groupId>
+			<artifactId>segtaf-domain-business</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+	</dependencies>
 </project>
