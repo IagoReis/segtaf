@@ -1,6 +1,7 @@
 package br.com.iagoreis.segtaf.domain.business.rules;
 
 import br.com.iagoreis.segtaf.domain.business.enums.Categoria;
+import br.com.iagoreis.segtaf.domain.business.exception.CalculadoraTarifaCategoriaArgumentosInvalidosException;
 import br.com.iagoreis.segtaf.domain.business.exception.CalculadoraTarifaCategoriaNaoEncontradaException;
 import br.com.iagoreis.segtaf.domain.business.exception.CalculadoraTarifaCategoriaNullException;
 import br.com.iagoreis.segtaf.domain.business.exception.CalculadorasTarifaCategoriaNaoInformadasException;
@@ -104,6 +105,32 @@ class CalculadoraTarifaCategoriaTest {
 
             calculadoras.calcularPrecoTarifado(Categoria.RESIDENCIAL, BigDecimal.TEN);
         });
+    }
+
+    @Test
+    void garantirQueEstoureUmaExcecaoCasoACalculadoraSejaCriadaComDadosInvalidos() {
+
+        final var categoria = Categoria.VIDA;
+        final var iof = 1.00d;
+        final var pis = 2.00d;
+        final var cofins = 3.00d;
+
+        assertThrows(CalculadoraTarifaCategoriaArgumentosInvalidosException.class, () -> {
+            new CalculadoraTarifaCategoria(null, iof, pis, cofins) {};
+        });
+
+        assertThrows(CalculadoraTarifaCategoriaArgumentosInvalidosException.class, () -> {
+            new CalculadoraTarifaCategoria(categoria, null, pis, cofins) {};
+        });
+
+        assertThrows(CalculadoraTarifaCategoriaArgumentosInvalidosException.class, () -> {
+            new CalculadoraTarifaCategoria(categoria, iof, null, cofins) {};
+        });
+
+        assertThrows(CalculadoraTarifaCategoriaArgumentosInvalidosException.class, () -> {
+            new CalculadoraTarifaCategoria(categoria, iof, pis, null) {};
+        });
+
     }
 
 }
