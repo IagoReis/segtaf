@@ -18,6 +18,7 @@
 * * * [Cálculo do Preço Tarifado do Produto](#cálculo-do-preço-tarifado-do-produto)
 * [API de Produtos](#api-de-produtos)
 * * [Introdução da API de Produtos](#introdução-da-api-de-produtos)
+* * [Distributed Tracing](#distributed-tracing)
 * * [Busca de Produto por ID](#busca-de-produtos-por-id)
 * * [Alteração de Produto por ID](#alteração-de-produtos-por-id)
 * * [Deleção de Produto por ID](#deleção-de-produtos-por-id)
@@ -93,7 +94,7 @@ Então basta você acessar o endereço http://localhost:8080/h2-console em seu n
 
 >**Obs:** A porta para acessar o console pode mudar de acordo com a porta em que o projeto estiver rodando.
 >
-> Pore exemplo, se o projeto estiver rodando na porta 10000, então o console deverá ser acessado através do endereço http://localhost:10000/h2-console. 
+> Por exemplo, se o projeto estiver rodando na porta 10000, então o console deverá ser acessado através do endereço http://localhost:10000/h2-console. 
 
 Os dados para realizar do login devem ser informados da seguinte maneira:
 
@@ -156,11 +157,21 @@ Para a solução do cáculo foi utilizado 03 design patterns.
 
 ### Strategy
 
-A aplicação possui valores diferentes para realizar o cálculo de cada categoria de seguro.
+De acordo com a regra de negócio, o preço tarifado do produto deve ser calculado de acordo com a tarifa.
 
-Sendo assim se utilizássemos diversos if, a aplicação ficaria com difícil manutenção e extensão, caso seja necessário adiconar novas categorias no futuro ou mudar os valores atuais das categorias. 
+Se utilizássemos if para identificar a categoria, a aplicação ficaria com difícil manutenção e extensão.
 
-A intenção foi evitar essa situação de ter uma única classe com todas as regras contendo divesos "ifs":
+Por exemplo, ao implementar uma nova categoria, teríamos que mexer no mesmo código/classe onde estão implementadas as outras categorias.
+
+O que pode causar bugs e tornar o desenvolvolvimento mais lento.
+
+A intenção foi evitar essa situação de ter uma única classe com todas as regras contendo divesos if:
+
+Seguindo o Design Pattern Strategy, a solução foi criar uma classe diferente para realizar o cáculo de preço tarifado para cada categoria.
+
+Assim caso uma nova categoria tenha que ser implementada/alterada, não haverá mudança de código na classe das outras categorias.
+
+**Exemplo de código a ser evitado com muitos if:**
 
 ```java
 if (categoria == "VIDA") {
@@ -170,9 +181,11 @@ if (categoria == "VIDA") {
 if (categoria == "AUTO") {
     return precoBase + (precoBase * 0.055) + (precoBase * 0.04) + (precoBase * 0.01);
 }
-```
 
-Seguindo o Design Pattern Strategy, a solução foi criar uma classe diferente para realizar o cáculo de cada categoria.
+if (categoria == "VIAGEM") {
+return precoBase + (precoBase * 0.055) + (precoBase * 0.04) + (precoBase * 0.01);
+}
+```
 
 
 ### Template Method
@@ -185,7 +198,7 @@ Porém essa classe abstrata não possui os valores de IOF, PIS e COFINS.
 
 Sendo assim, esses valores devem ser informados via construtor pelas classes que estendem essa classe abstrata.
 
-A vantagem de utilizar esse design pattern é evitar a repetição de código para um compotamento que é em comum entre diversas classes. 
+A vantagem de utilizar esse design pattern é evitar a repetição de código para um comportamento comum entre diversas classes. 
 
 **Exemplo da classe abstrata:**
 
@@ -214,9 +227,7 @@ public abstract class CalculadoraTarifaCategoria {
     }
 
     private BigDecimal calcularValorTarifa(final BigDecimal valorBase, final Double porcentagem) {
-        return valorBase
-            .divide(BigDecimal.valueOf(CEM_POR_CENTO))
-            .multiply(BigDecimal.valueOf(porcentagem));
+        return valorBase.divide(BigDecimal.valueOf(CEM_POR_CENTO)).multiply(BigDecimal.valueOf(porcentagem));
     }
 }
 ```
@@ -236,15 +247,13 @@ public class CalculadoraTarifaCategoriaVida extends CalculadoraTarifaCategoria {
 
 ### Chain Of Responsibility
 
-Todo cálculo de preço tarifado é realizado para alguma categoria.
+Conforme explicado anteriormente, temos diversas classes que realizam o cálculo do preço tarifado para cada categoria.
 
-Conforme explicado anteriormente, temos diversas classes que realizam o cálculo, uma para cada categoria.
-
-Então como saber em tempo de execução qual classe devo utilizar para realizar o cálculo? Usando o design pattern Chain Of Responsibility!
+Então como saber em tempo de execução qual classe devo utilizar para realizar o cálculo quando informado o produto? Usando o design pattern Chain Of Responsibility!
 
 Usando esse design pattern eu não preciso informar qual classe irá realizar o cálculo.
 
-Eu só preciso informar a categoria, então entre as classes que realizam de cálculo, será verificado qual deles pode calcular o preco tarifado da categoria que foi informada. 
+Eu só preciso informar a categoria, então entre as classes que realizam de cálculo será verificado qual delas pode calcular o preco tarifado da categoria que foi informada. 
 
 **Exemplo:**
 
@@ -270,13 +279,15 @@ public BigDecimal calcularPrecoTarifado(final Categoria categoria, final BigDeci
 }
 ```
 
+>**Obs.:** este é apenas um exemplo, a classe real implementa no projeto está mais completa.
+
 # API de Produtos
 
 ## Introdução da API de Produtos
 
-A API de Produtos é uma API Rest que fornece endpoints para realizar o CRUD dos Produtos de Seguro.
+A API de Produtos é uma API Rest que fornece endpoints para o CRUD dos Produtos de Seguro.
 
-Na raiz do projeto está disponível a collection do insomnia, **api-produtos-insomnia-collection-2024-03-08.json**, para facilitar o envio de requisições para a API. 
+Na raiz do projeto está disponível uma collection do insomnia, **api-produtos-insomnia-collection-2024-03-08.json**, para facilitar o envio de requisições para a API. 
 
 Logo abaixo também há explicações de como funciona cada endpoint da API, contando inclusive com exemplos em **cURL**.
 
@@ -289,7 +300,7 @@ Isso significa que é possível identificar o ciclo de vida de uma requisição 
 
 Assim como também o ciclo de vida de uma requisição entre diferentes sistemas.
 
-Para isso basta informar o header **traceparent** seguindo os padrões na documentação https://www.w3.org/TR/trace-context.
+Para isso basta informar o header **traceparent** seguindo os padrões da documentação https://www.w3.org/TR/trace-context.
 
 E caso o header traceparent não seja informado, a aplicação irá gerar um automaticamente.
 
